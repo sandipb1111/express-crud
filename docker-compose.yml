@@ -2,7 +2,7 @@ version: "3"
 
 services:
     express_starter:
-        container_name: "express_starter"
+        container_name: "express_starters"
         build:
             context: .
             target: "dev"
@@ -18,7 +18,7 @@ services:
             - 3001:3001
             - 9229:9229
         environment:
-            DATABASE_URL: mysql://root:password@express_starter_db:3306/express_starter
+            DATABASE_URL: mysql://root:password@express_starter_db:3306/express_starters
 
     express_starter_db:
         image: mysql
@@ -27,7 +27,7 @@ services:
             - "3308:3306"
         environment:
             MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: express_starter
+            MYSQL_DATABASE: express_starters
             MYSQL_USER: user
             MYSQL_PASSWORD: password
         volumes:
