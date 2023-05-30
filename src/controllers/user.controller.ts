@@ -2,6 +2,7 @@
 import { NextFunction, Request, Response } from "express"
 
 import * as userService from "../services/user.service"
+import { StatusCodes } from "http-status-codes"
 
 export const readUser = async (
     req: Request,
@@ -18,7 +19,7 @@ export const postUser = async (
     next: NextFunction
 ) => {
     const data = await userService.postUser(req.body)
-    res.send(data)
+    res.send(StatusCodes.CREATED)
 }
 
 export const deleteUser = async (
