@@ -11,6 +11,7 @@ export const readUser = async (
 ) => {
     const data = await userService.display()
     res.send(data)
+    res.sendStatus(StatusCodes.OK)
 }
 
 export const postUser = async (
@@ -19,7 +20,7 @@ export const postUser = async (
     next: NextFunction
 ) => {
     const data = await userService.postUser(req.body)
-    res.send(StatusCodes.CREATED)
+    res.sendStatus(StatusCodes.CREATED)
 }
 
 export const deleteUser = async (
@@ -28,6 +29,7 @@ export const deleteUser = async (
     next: NextFunction
 ) => {
     await userService.deleteUser(req.params.id)
+    res.sendStatus(StatusCodes.OK)
 }
 
 export const updateUser = async (
@@ -36,4 +38,5 @@ export const updateUser = async (
     next: NextFunction
 ) => {
     await userService.updateUser(req.params.id, req.body)
+    res.sendStatus(StatusCodes.OK)
 }
