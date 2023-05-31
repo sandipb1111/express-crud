@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express"
-
 import * as userService from "../services/user.service"
 import { StatusCodes } from "http-status-codes"
 
@@ -11,7 +10,6 @@ export const readUser = async (
 ) => {
     const data = await userService.display()
     res.send(data)
-    res.sendStatus(StatusCodes.OK)
 }
 
 export const postUser = async (
@@ -19,8 +17,12 @@ export const postUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    const data = await userService.postUser(req.body)
-    res.sendStatus(StatusCodes.CREATED)
+    try {
+        const data = await userService.postUser(req.body)
+        res.sendStatus(StatusCodes.CREATED)
+    } catch (err) {
+        next(err)
+    }
 }
 
 export const deleteUser = async (
@@ -28,8 +30,14 @@ export const deleteUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    await userService.deleteUser(req.params.id)
-    res.sendStatus(StatusCodes.OK)
+    try {
+        const data = await userService.deleteUser(parseInt(req.params.id))
+        const sanitizedUser = { ...data }
+        console.log(sanitizedUser)
+        res.status(200).send(sanitizedUser)
+    } catch (err) {
+        next(err)
+    }
 }
 
 export const updateUser = async (
@@ -37,6 +45,10 @@ export const updateUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    await userService.updateUser(req.params.id, req.body)
-    res.sendStatus(StatusCodes.OK)
+    try {
+        await userService.updateUser(req.params.id, req.body)
+        res.sendStatus(StatusCodes.OK)
+    } catch (err) {
+        next(err)
+    }
 }
