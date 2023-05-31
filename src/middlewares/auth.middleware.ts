@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import * as Boom from "@hapi/boom"
 import { Request, Response, NextFunction } from "express"
 import * as jwt from "jsonwebtoken"
 
@@ -11,11 +12,10 @@ export function authenticateToken(
 
     const token =
         req.headers.authorization && req.headers.authorization.split(" ")[1]
+    console.log(token)
 
     if (!token) {
-        return res
-            .status(401)
-            .json({ success: false, message: "Missing authentication token" })
+        throw Boom.notFound("Missing Token Authentication")
     }
 
     try {
@@ -28,9 +28,7 @@ export function authenticateToken(
 
         next() // Proceed to the next middleware or route handler
     } catch (error) {
-        return res
-            .status(403)
-            .json({ success: false, message: "Invalid authentication token" })
+        throw Boom.notAcceptable("Invalid token authentication ")
     }
 }
 
@@ -42,9 +40,6 @@ export function isAdmin(req: Request, res: Response, next: NextFunction) {
     if (user && user.isAdmin) {
         next() // Proceed to the next middleware or route handler
     } else {
-        return res.status(403).json({
-            success: false,
-            message: "Unauthorized: User is not an admin",
-        })
+        throw Boom.unauthorized("User is not an Amdin")
     }
 }
